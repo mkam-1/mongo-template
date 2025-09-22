@@ -1,28 +1,27 @@
-// src/app.js
 const express = require('express');
-const morgan = require('morgan');
 const helmet = require('helmet');
 const cors = require('cors');
 
 const config = require('./config/config');
 const errorHandler = require('./middlewares/errorHandler');
-
-// Routes
-const routes = require('./routes');
+const morganMiddleware = require('./middlewares/logger'); // <-- new
 const { swaggerUi, specs } = require('./swagger/swagger');
+
+const routes = require('./routes');
 const app = express();
 
 // ---------- Global Middlewares ----------
 app.use(helmet()); // security headers
 app.use(cors());   // enable CORS
-app.use(morgan('dev')); // logging
+app.use(morganMiddleware); //  Morgan + Winstonlogging
 app.use(express.json()); // parse JSON requests
 
 // ---------- Health Check ----------
 app.get('/health', (req, res) => {
   res.json({ ok: true, env: config.nodeEnv, uptime: process.uptime() });
 });
-// swagger docs
+
+// Swagger docs
 app.use('/api/docs', swaggerUi.serve, swaggerUi.setup(specs));
 
 // ---------- API Routes ----------

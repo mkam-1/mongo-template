@@ -3,7 +3,7 @@ const { verifyAccessToken } = require('../utils/token');
 module.exports = (req, res, next) => {
   try {
     const auth = req.headers?.authorization;
-console.log(!auth || !auth.startsWith('Bearer '),'===', auth)
+
     if (!auth || !auth.startsWith('Bearer ')) {
       return res.status(401).json({
         ok: false,
