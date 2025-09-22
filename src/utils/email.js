@@ -1,7 +1,6 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/config');
 
-
 const transporter = nodemailer.createTransport({
 host: config.smtp.host,
 port: Number(config.smtp.port) || 587,
@@ -11,7 +10,6 @@ user: config.smtp.user,
 pass: config.smtp.pass,
 },
 });
-
 
 async function sendMail({ to, subject, html, text }) {
 const msg = {
@@ -23,6 +21,5 @@ html,
 };
 return transporter.sendMail(msg);
 }
-
 
 module.exports = { sendMail };
